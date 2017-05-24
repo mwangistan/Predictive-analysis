@@ -266,4 +266,91 @@ def SegmentCustomers(request):
 		
 	return render(request, 'segmentCustomers.html', {'columns':keys})
 
+def analyseResults(request):
+	return render(request, 'analyseResults.html')
+
+def createSegment(request):
+	return render(request, 'createSegment.html')
+
+def twitterAnalytics(request, name):
+	return render(request, 'TwitterAnalytics.html', {'segment':name})
+
+def twitterquery(request):
+	result = requests.get(settings.TWITTER_URL+request.POST['data'])
+
+	return HttpResponse(json.dumps(result.text), content_type="application/json")
+
+
+def submitSentiments(request):
+	tweets = json.loads(request.POST['tweets'])['tweets']
+	positiveTweets = []
+	negativeTweets = []
+	neutralTweets = []
+	for tweet in tweets:
+		if 'content' in tweet['cde']:
+			if tweet['cde']['content']['sentiment']['polarity'] == 'POSITIVE':
+				positiveTweets.append('match')
+			if tweet['cde']['content']['sentiment']['polarity'] == 'NEGATIVE':
+				negativeTweets.append('match')
+			if tweet['cde']['content']['sentiment']['polarity'] == 'NEUTRAL':
+				neutralTweets.append('match')
+
+		else:
+			pass
+
+	segment = Segments.objects.get(es_index=request.POST['segment'])
+	segment.tweetTerm = request.POST['searchTerm']
+	segment.positiveSentiment = len(positiveTweets)
+	segment.negativeSentiment = len(negativeTweets)
+	segment.neutralSentiment = len(neutralTweets)
+	segment.save()
+
+	return HttpResponse(json.dumps({'success':"Added successfully"}), content_type="application/json")
+
+def segmentVisual(request, name):
+	segment = Segments.objects.get(es_index=name)
+	customerLen = len(segment.customers.all())
+	return render(request, 'segmentVisual.html', {'segment':name, 'title': segment.name,'tweet':segment.tweetTerm, 'customers':customerLen})
+
+def segmentVisualAnalysis(request, name):
+	segment = Segments.objects.get(es_index=name)
+	customers = segment.customers.all()
+	genderLabel = []
+	nationalityLabel = []
+	marital_statusLabel = []
+	ageLabel = []
+	for customer in customers:
+		b_date = datetime.strptime(customer.date_of_birth, '%m-%d-%Y')
+		birthDate = int((datetime.today() - b_date).days/365)
+
+		if birthDate>=12 and birthDate<=17:
+			ageLabel.append("12-17")
+		elif birthDate>=18 and birthDate<=24:
+			ageLabel.append("18-24")
+		elif birthDate>=25 and birthDate<=34:
+			ageLabel.append("25-34")
+		elif birthDate>=35 and birthDate<=44:
+			ageLabel.append("35-44")
+		elif birthDate>=45 and birthDate<=54:
+			ageLabel.append("45-54")
+
+		elif birthDate>=55 and birthDate<=64:
+			ageLabel.append("55-64")
+		elif birthDate>=65:
+			ageLabel.append("65+")
+		else:
+			ageLabel.append("unknown")
+
+		genderLabel.append(customer.gender)
+		nationalityLabel.append(customer.nationality)
+		marital_statusLabel.append(customer.marital_status)
+
+	nationality = Counter(nationalityLabel)
+	gender = Counter(genderLabel)
+	marital_status = Counter(marital_statusLabel)
+	age = Counter(ageLabel)
+
+	return HttpResponse(json.dumps({'positivesentiments':segment.positiveSentiment, 'negativesentiments':segment.negativeSentiment, 'neutralsentiments':segment.neutralSentiment, 'gender':gender, 'marital_status':marital_status, 'nationality':nationality, 'age':age, 'searchRes':segment.searchResults}), content_type="application/json")
+
+
 
