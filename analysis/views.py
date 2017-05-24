@@ -353,4 +353,110 @@ def segmentVisualAnalysis(request, name):
 	return HttpResponse(json.dumps({'positivesentiments':segment.positiveSentiment, 'negativesentiments':segment.negativeSentiment, 'neutralsentiments':segment.neutralSentiment, 'gender':gender, 'marital_status':marital_status, 'nationality':nationality, 'age':age, 'searchRes':segment.searchResults}), content_type="application/json")
 
 
+def predictPage(request):
+	segment = Segments.objects.all()
+	return render(request, 'Predict.html', {'segment':segment})
+
+def predictData(request, name):
+	segment = Segments.objects.get(es_index=name)
+	return render(request, 'PredictData.html', {'segment':segment})
+
+def predictDataAnalysis(request, name):
+	segment = Segments.objects.get(es_index=name)
+	customers = segment.customers.all()
+	genderLabel = []
+	nationalityLabel = []
+	ageLabel = []
+	maritalLabel = []
+	for customer in customers:
+		b_date = datetime.strptime(customer.date_of_birth, '%m-%d-%Y')
+		birthDate = int((datetime.today() - b_date).days/365)
+
+		if birthDate>=12 and birthDate<=17:
+			ageLabel.append("12-17")
+		elif birthDate>=18 and birthDate<=24:
+			ageLabel.append("18-24")
+		elif birthDate>=25 and birthDate<=34:
+			ageLabel.append("25-34")
+		elif birthDate>=35 and birthDate<=44:
+			ageLabel.append("35-44")
+		elif birthDate>=45 and birthDate<=54:
+			ageLabel.append("45-54")
+
+		elif birthDate>=55 and birthDate<=64:
+			ageLabel.append("55-64")
+		elif birthDate>=65:
+			ageLabel.append("65+")
+		else:
+			ageLabel.append("unknown")
+
+		genderLabel.append(customer.gender)
+		nationalityLabel.append(customer.nationality)
+		maritalLabel.append(customer.marital_status)
+	gender = Counter(genderLabel)
+	nationality = Counter(nationalityLabel)
+	age = Counter(ageLabel)
+	marital = Counter(maritalLabel)
+	
+	max_gender = max(gender, key=gender.get)
+	max_nationality = max(nationality, key=nationality.get)
+	max_age = max(age, key=age.get)
+	max_marital = max(marital, key=marital.get)
+
+	gender_calc = (gender[max_gender] / len(customers) * 100)
+	nationality_calc = (nationality[max_nationality] / len(customers) * 100)
+	age_calc = (age[max_age] / len(customers) * 100)
+	marital_calc = (marital[max_marital] / len(customers) * 100)
+
+	All_calc = {'gender':gender_calc, 'nationality':nationality_calc, 'age':age_calc, 'marital status':marital_calc}
+
+	sorted_calc = sorted(All_calc.items(), key=operator.itemgetter(1))
+
+	results = json.loads(segment.searchResults)
+
+	return HttpResponse(json.dumps({'sorted':sorted_calc, 'results':results, 'omit_col':segment.mapping_profiles}), content_type="application/json")
+
+
+def predictDrivers(request, name):
+	cols = request.POST['cols']
+	segment = Segments.objects.get(es_index=name)
+	results = json.loads(segment.searchResults)
+
+	value_at_index = list(results[0]['_source'].values())[int(cols)]
+	key_at_index = list(results[0]['_source'].keys())[int(cols)]
+
+	all_keys = list(results[0]['_source'].keys())
+	key_y = [] #All y keys
+
+	for key in all_keys:
+		if type(results[0]['_source'][key]) == int and key != key_at_index and key != segment.mapping_profiles:
+			key_y.append(key)
+
+	if type(value_at_index) == int:
+		all_values = []
+		for rs in results:
+			all_values.append(rs['_source'])
+		df = pandas.DataFrame(all_values)
+
+		prediction = {}
+		for key in key_y:
+			prediction[key] = df[key_at_index].corr(df[key])
+
+		if len(prediction) == 0:
+			return HttpResponse(json.dumps({'noprediction':'No predictions'}), content_type="application/json")
+		else:
+			return HttpResponse(json.dumps({'prediction':prediction}), content_type="application/json")
+			
+
+	return HttpResponse(json.dumps({'success':'Added successful'}), content_type="application/json")		
+
+
+
+def discover(request):
+	return render(request, 'discovery.html')
+
+def discoverTweets(request):
+	return render(request, 'dicoveryTweets.html')
+
+
 
