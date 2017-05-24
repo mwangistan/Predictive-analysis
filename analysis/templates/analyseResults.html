@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Query results</h4>
+                                <p id="title_results"></p>
+                                <button class="btn btn-warning" id="refineQuery"><span class="glyphicon glyphicon-thumbs-down"></span> Refine the query</button>
+                                <button class="btn btn-success" id="createCustomerSegment"><span class="glyphicon glyphicon-thumbs-up"></span> Create customer segment</button>
+                            </div>
+
+                            <div class="content" id="content_results">
+                                <table class="display responsive no-wrap" id="results_table2" style=""></table>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                            </div>
+                        </div>
+
+        </div>
+{% endblock %}
+
+{% block javascript %} <script src="{% static 'assets/js/analyseResults.js' %}"></script> {% endblock %}

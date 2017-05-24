@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Build your query for: {{segment.name}}</h4>
+                                <p class="">Files contained in the segment are: <span  style="font-weight: 700;" class="text-success">{{segment.files_added}}</span></p>
+                            </div>
+
+                            <div class="content">
+                                <div class="form-group">
+                                    <label for="query">The column</label>
+                                    <select class="form-control" id="queryColumn">
+                                        {% for column in columns %}
+                                        <option value="{{column}}">{{column}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="condition">The condition</label>
+                                    <select class="form-control" id="queryCondition">
+                                        <option value="is equal to">Is equal to</option>
+                                        <option value="is less than">Is less than</option>
+                                        <option value="is greater than">Is greater than</option>
+                                        <option value="is less than or equal to">Is less than or equal to</option>
+                                        <option value="is greater than or equal to">Is greater than or equal to</option>
+                                        <option value="is not equal to">Is not equal to</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="value">The value</label>
+                                    <input type="text" class="form-control" placeholder="Value" id="QueryVal"/>
+                                </div>
+
+                                <div class="form-group">
+                                    <button id="addQuery" class="btn btn-default">Add query</button>
+                                    <button id="andQuery" class="btn btn-success">Add "and" query</button>
+                                    <button id="orQuery" class="btn btn-warning">Add "or" query</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="content">
+                                <div class="header">
+                                    <h4 class="title">My query</h4>
+                                    <p id="queryFull"></p>
+                                </div>
+
+                                <div class="footer">
+                                    <input type="text" value="{{segment.es_index}}" id="IndexName"/>
+                                    <button id="runQuery" class="btn btn-success"><i class="glyphicon glyphicon-flash"></i> Run this query</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                            </div>
+                        </div>
+
+        </div>
+{% endblock %}

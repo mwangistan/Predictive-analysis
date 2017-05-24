@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+        <div class="content" id="SegmentLoader">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Create a segment: <span class="stepDescription">Step 1</span></h4>
+                                <p class="segmentDescrition">Specify a file/files used to create a segment<p>
+                            </div>
+
+                            <div class="content" id="segmentStep1">
+                                <form method="post" id="fileUpload" class="fileUpload"  enctype="multipart/form-data"> {% csrf_token %}
+
+                                    <div class="form-group">
+                                        <label for="SegmentName">Segment Name: </label>
+                                        <input type="text" class="form-control" placeholder="Use a descriptive name" id="segment_name" required/>
+                                    </div>
+
+                                    <div class="btn btn-success files">
+
+                                        <span><i class="glyphicon glyphicon-plus"></i> Add .csv file/files</span>
+                                        <input name="filesToUpload[]" class="filesToUpload" type="file" multiple="" />
+                                    </div>
+
+                                    <table class='table table-hover table-striped filesTable'>
+                                        <thead>
+                                            <th>File name</th>
+                                            <th>Remove</th>
+                                        </thead>
+
+                                        <tbody id="file-table"></tbody>
+
+                                    </table> 
+
+                                    <div class="form-group" id="columns_to_merge">
+                                        <label for="common">Which column is common in the files attached: </label>
+                                        <input id="colums_merge" class="form-control" placeholder="e.g Customer id number"/>
+                                    </div>  
+
+
+                                    <div class="form-group upload_files createSegment" id="upload-button">
+                                        <button class="btn btn-warning"><span class="pe-7s-cloud-upload"></span> Upload</button>
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+                            <div class="footerSegment">
+                                <button id="segmentNo" class="btn btn-warning"><span class="glyphicon glyphicon-thumbs-down"></span> Go back</button><button class="btn btn-success" id="segmentYes"><span class="glyphicon glyphicon-thumbs-up"></span> Looks good</button>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+    
+                                </div>
+                            </div>
+                        </div>
+{% endblock %}

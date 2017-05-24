@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Segment Customers</h4>
+                                <p class="">To segment the customers based on the behavior we have obtained, select the column in our results that maps to customer profiles. This is to ensure faster segmentation of our customers</p>
+                            </div>
+
+                            <div class="content">
+                                <form method="post" action="{% url 'segment-customers' %}"> {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="customerProfile">Behavior column</label>
+                                        <select class="form-control" id="behaviorFnl">
+                                        {% for column in columns %}
+                                            <option value="{{column}}">{{column}}</option>
+                                        {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button class="btn btn-success" id="create_segmentFnl">Create segment</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                            </div>
+                        </div>
+        </div>
+{% endblock %}

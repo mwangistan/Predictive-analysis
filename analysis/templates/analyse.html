@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Segment: {{segment.name}}</h4>
+                                <p class="SegmentDetails">Files contained in the segment are: <span  style="font-weight: 700;" class="text-success">{{segment.files_added}}</span></p>
+
+                                {% if segment.segmentSearch %}
+                                    <p class="SegmentDetails">Queries run to build the segment are: <span  style="font-weight: 700;" class="text-success">{{segment.segmentSearch}}</span></p>
+                                {% endif %}
+
+                                {% if segment.tweetTerm %}
+                                    <p class="SegmentDetails">Tweet query used to build segment is: <span  style="font-weight: 700;" class="text-success">Find all tweets with term {{segment.tweetTerm}}</span></p>
+                                {% endif %}
+                            </div>
+
+                            <div class="content">
+                                <input type="text" value="{{segment.es_index}}" style="display: none;" id="AnalyseSegmentName"/>
+                                    <table class="display responsive no-wrap" id="segment_table" style="width: 100%;"></table>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Actions</h4>    
+                            </div>
+
+                            <div class="content">
+                                <form method="post" action="{% url 'analyse-data2' segment.es_index %}"> {% csrf_token %}
+                                    <div class=" form-group">
+                                        <button style="width: 230px;" class="btn btn-success"><i class="glyphicon glyphicon-zoom-in"></i> Query this segment</button>
+                                        
+                                    </div>
+                                </form>
+
+                                <form method="post" action="/deleteSegment/{{segment.name}}"> {% csrf_token %}
+                                    <div class="form-group">
+                                         <button style="width: 230px;" class="btn btn-warning" id="delete_segment"><span class="glyphicon glyphicon-trash"></span> Delete segment</button>
+                                    </div>
+                                </form>
+
+                                <!--
+                                <form method="post" action="{% url 'twitter_analytics' segment.es_index %}"> {% csrf_token %}
+                                    <div class="form-group">
+                                         <button style="width: 230px;" class="btn btn-info" ><span class="fa fa-twitter"></span> Add twitter data to segment</button>
+                                    </div>
+                                </form>
+
+                                -->
+
+
+                                <form method="post"> {% csrf_token %}
+                                    <div class="form-group">
+                                         <button style="width: 230px;" class="btn btn-danger" id="share_segment"><span class="glyphicon glyphicon-share"></span> Share segment</button>
+                                    </div>
+                                </form>
+
+
+                                <form method="post" action="{% url 'segment_visual' segment.es_index %}"> {% csrf_token %}
+                                    <div class="form-group">
+                                         <button style="width: 230px;" class="btn btn-success" id="share_segment"><span class="glyphicon glyphicon-dashboard"></span> Visual summary</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                            </div>
+                        </div>
+        </div>
+{% endblock %}

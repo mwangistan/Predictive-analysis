@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+        <div class="content" id="customerProfileContent">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Customer profiles</h4>
+                                <p class="">This section lets you add your customer profiles that can be used to track respective customer behavior. Add <span style="font-weight: 700;" class="text-success">excel format or csv</span> files containing your customer profile data </p>
+                            </div>
+
+                            <div class="content">
+                                <form method="post" id="fileUpload" class="fileUpload" enctype="multipart/form-data"> {% csrf_token %}
+                                    <div class="btn btn-success files">
+                                        <span><i class="glyphicon glyphicon-plus"></i> Add files</span>
+                                        <input name="filesToUpload[]" class="filesToUpload" type="file" multiple/>
+                                    </div>
+
+                                    <div class="upload-button createProfile" id="upload-button">
+                                        <button class="btn btn-warning"><span class="pe-7s-cloud-upload"></span> Upload</button>
+                                    </div>
+
+
+                                    <table class='table table-hover table-striped filesTable' id="filesTable">
+                                        <thead>
+                                            <th>File name</th>
+                                            <th>Remove</th>
+                                        </thead>
+
+                                        <tbody id="file-table"></tbody>
+
+                                    </table>                
+                                </form>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="card ">
+                                <div class="header">
+                                    <h4 class="title">Gender summary</h4>
+                                    <p class="category">All customers based on gender</p>
+                                </div>
+                                <div class="content">
+                                    <div id="GenderSummary" class="ct-chart ct-perfect-fourth"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card ">
+                                <div class="header">
+                                    <h4 class="title">Marital status summary</h4>
+                                    <p class="category">All customers based on marital status</p>
+                                </div>
+                                <div class="content">
+                                    <div id="MaritalSummary" class="ct-chart ct-perfect-fourth"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card card-user">
+                            <div class="content">
+                                <div class="author">
+                                     <a href="#">
+                                    <img class="avatar border-gray" src="{% static 'assets/img/default-avatar.png' %}" alt="..."/>
+                                     <h4 class="title"><br />
+                                         <small>Customer profile data can contain the following columns</small>
+                                    <div class="ul_customer_data">
+                                        <ul>
+                                            <li>First name</li>
+                                            <li>Middle name</li>
+                                            <li>Last name</li>
+                                            <li>Date Of Birth</li>
+                                            <li>Email</li>
+                                            <li>ID number</li>
+                                            <li>Gender</li>
+                                            <li>Nationality</li>
+                                            <li>Marital status</li>
+                                        </ul>
+                                    </div>
+                                      </h4>
+                                    </a>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="text-center">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                        <div class="col-md-6">
+                            <div class="card ">
+                                <div class="header">
+                                    <h4 class="title">Nationality summary</h4>
+                                    <p class="category">All customers based on nationality</p>
+                                </div>
+                                <div class="content">
+                                    <div id="nationalitySummary" class="ct-chart"></div>
+                                </div>
+                            </div>
+                        </div>  
+
+                        <div class="col-md-6">
+                            <div class="card ">
+                                <div class="header">
+                                    <h4 class="title">Age summary</h4>
+                                    <p class="category">All customers based on age</p>
+                                </div>
+                                <div class="content">
+                                    <div id="ageSummary" class="ct-chart"></div>
+                                </div>
+                            </div>
+                        </div>    
+                </div>
+            </div>
+        </div>
+
+
+
+  {% endblock %}

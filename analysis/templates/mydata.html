@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Customer profiles</h4>
+                                <p class="category">This section lets you add your customer profiles that can be used to track respective customer behavior. Add a csv file containing your customer profile data</p>
+                            </div>
+                            <div class="content">
+                                <form method="post" id="fileUpload" class="fileUpload"  enctype="multipart/form-data"> {% csrf_token %}
+                                    <div class="btn btn-success files">
+                                        <span><i class="glyphicon glyphicon-plus"></i> Add files</span>
+                                        <input name="filesToUpload[]" class="filesToUpload" type="file" multiple="" />
+                                    </div>
+
+                                    <div class="upload-button">
+                                        <button class="btn btn-warning"><span class="pe-7s-cloud-upload"></span> Upload</button>
+                                    </div>
+
+
+                                    <table class='table table-hover table-striped filesTable'>
+                                        <thead>
+                                            <th>File name</th>
+                                            <th>Remove</th>
+                                        </thead>
+
+                                        <tbody id="file-table"></tbody>
+
+                                    </table>                
+                                </form>
+
+                                <div class="actual_files">
+                                    {% if files|length == 0 %}
+                                        <h3>Currently you have no data available. Add data to discover new insights</h3>
+                                    {% else %}
+                                        <table class='table table-stripped'>
+                                            <thead>
+                                                <th>
+                                                    <input type="checkbox" value="">
+                                                </th>
+                                                <th>File name</th>
+                                                <th>File type</th>
+                                                <th>Date added</th>
+                                            </thead>
+                                        {% for file in files %}
+                                            <tbody>
+                                                <td>
+                                                    <input type="checkbox" value="">
+                                                </td>
+                                                <td>{{file.filename}}</td>
+                                                <td><div class="file-icon file-icon" data-type="{{file.extension}}"></div></td>
+                                                <td>{{file.date_added}}</td>
+                                            </tbody>
+                                        {% endfor %}
+                                        </table>
+                                    {% endif %}
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    {% endblock %}

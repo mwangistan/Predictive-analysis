@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Discover opportunities</h4>
+                                <p class="segmentDescrition">In this section we search twitter data to figure out what people are talking about that they most value and weaknesses in our product/service or competing products/services to discover new opportunities and better server our customers. </p>
+                            </div>
+                            <div class="content">
+                                  <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active"><a href="#positive" aria-controls="home" role="tab" data-toggle="tab">Positive tweets</a></li>
+                                    <li role="presentation"><a href="#negative" aria-controls="profile" role="tab" data-toggle="tab">Negative tweets</a></li>
+                                    <li role="presentation"><a href="#neutral" aria-controls="messages" role="tab" data-toggle="tab">Neutral tweets</a></li>
+
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <br/>
+                                    <div role="tabpanel" class="tab-pane active" id="positive">
+                                        <table class="display responsive no-wrap" id="discoverPositive" style=""></table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="negative">
+                                        <table class="display responsive no-wrap" id="discoverNegative" style=""></table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="neutral">
+                                        <table class="display responsive no-wrap" id="discoverNeutral" style=""></table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+    
+                                </div>
+                            </div>
+                        </div>
+{% endblock %}
+
+{% block javascript %} 
+
+<script src="{% static 'assets/js/discoverTweets.js' %}"></script>
+
+ {% endblock %}

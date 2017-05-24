@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Visual Summary for: {{title}}</h4>
+                                <p class="SegmentDetails">Describes who our segment is made up of</p>
+                            </div>
+
+                            <div class="content">
+                                <input type="text" value="{{segment}}" style="display: none;" id="SegmentVisual"/>
+
+                            {% if customers == 0 %}
+                                <div style="text-align: center;">
+                                        <h2 class="SegmentDetails">No customers in the segment</h2>
+                                        <p class="SegmentDetails">Click <a href="{% url 'analyse-data2' segment %}">here</a> to query your data to get customers in the segment</p>
+
+                                </div>
+
+                            {% endif %}
+                                   
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card ">
+                                <div class="header">
+                                    <h4 class="title">Gender summary</h4>
+                                    <p class="category">All customers of <span style="font-weight: 700;" class="text-success">{{title}}</span> segment based on gender</p>
+                                </div>
+                                <div class="content">
+                                    <div id="Gender" class="ct-chart ct-perfect-fourth"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card ">
+                                <div class="header">
+                                    <h4 class="title">Marital status summary</h4>
+                                    <p class="category">All customers of <span style="font-weight: 700;" class="text-success">{{title}}</span> segment based on marital status</p>
+                                </div>
+                                <div class="content">
+                                    <div id="Marital" class="ct-chart ct-perfect-fourth"></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                
+
+
+                            </div>
+
+                
+
+                <div class="row">
+                        <div class="col-md-6">
+                            <div class="card ">
+                                <div class="header">
+                                    <h4 class="title">Nationality summary</h4>
+                                    <p class="category">All customers of <span style="font-weight: 700;" class="text-success">{{title}}</span> segment based on nationality</p>
+                                </div>
+                                <div class="content">
+                                    <div id="nationality" class="ct-chart"></div>
+                                </div>
+                            </div>
+                        </div>  
+
+                        <div class="col-md-6">
+                            <div class="card ">
+                                <div class="header">
+                                    <h4 class="title">Age summary</h4>
+                                    <p class="category">All customers of <span style="font-weight: 700;" class="text-success">{{title}}</span> segment based on age</p>
+                                </div>
+                                <div class="content">
+                                    <div id="age" class="ct-chart"></div>
+                                </div>
+                            </div>
+                        </div>    
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Create your own insights</h4>
+                                <p class="segmentDescrition"> Own analysis for {{title}}. Just select the fields you want to analyse and Iris will create automatic visualizations for you</p>
+
+                                <form>
+                                    <div style="display: inline;">
+                                        <select id="OwnAnalysis">
+                                        </select>
+
+                                        <span style="margin-left: 10px;">vs</span>
+                                        <select id="OwnAnalysis2" style="margin-left: 20px;">
+                                        </select>
+
+                                        <button class="btn btn-success" style="margin-left: 20px;" id="CreateOwnVis">Create</button>
+                                    </div>
+                                </form>
+
+                            </div>
+
+                            <div class="content">
+                                <div id="OwnsegmentAnalysis" class="ct-chart ct-perfect-fourth"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                        </div>
+        </div>
+{% endblock %}
+
+{% block javascript %} 
+    <script src="{% static 'assets/js/segmentVisual.js' %}"></script>
+{% endblock %}

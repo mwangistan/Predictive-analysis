@@ -1,0 +1,9 @@
+#IndexName, #results_table, #andQuery, #orQuery{
+	display: none;
+}
+#queryFull, #title_results{
+	font-family: 'Dosis', sans-serif;
+}
+#createCustomerSegment{
+	float: right;
+}

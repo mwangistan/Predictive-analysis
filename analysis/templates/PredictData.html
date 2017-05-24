@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Predictions for: <span class="text-success">{{segment.name}}</span></h4>
+                                <p class="segmentDescrition">Predictions are based on customers past behavior(segments). Here we get to see the major drivers of particular behaviors to predict on customers who might behave the same way in future. We also add customer sentiments to predictions since how customers feel about a particular product/service will determine how they will behave in the future </p>
+                            </div>
+                        </div>
+                    </div>
+
+    
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="header">
+                                                <h4 class="title">Predictions based on <span class="text-success">customer profile</span></h4>
+                                                <p class="segmentDescrition">What drives our customers to behave as they do based on their profiles </p>
+                                            </div>
+
+                                            <div class="content">
+                                                <input type="text" value="{{segment.es_index}}" style="display: none;" id="segmentPrediction"/>
+                                                <div id="Predict" class="ct-chart ct-perfect-fourth"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="header">
+                                                <h4 class="title">Predictions based on <span class="text-success">Behavior</span></h4>
+                                                <p class="segmentDescrition">Based on customer behavior what drives <span>
+                                                    <select id="PredictionColumns">
+                                                        <option class="form-control"></option>
+                                                    </select>
+                                                </span> </p>
+                                            </div>
+
+                                            <div class="content">
+                                                <input type="text" value="{{segment.name}}" style="display: none;" id="segmentPrediction"/>
+                                                <div id="PredictBehavior" class="ct-chart ct-perfect-fourth"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+{% endblock %}
+
+{% block javascript %} <script src="{% static 'assets/js/predictData.js' %}"></script> {% endblock %}

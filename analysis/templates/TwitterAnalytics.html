@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Twitter analytics</h4>
+                                <p class="SegmentDetails">This section allows us to add twitter analytics to filter our segment users further. Add a search term to view user tweets.</p>
+
+                            </div>
+
+                            <div class="content">
+                               	<div class="form-group">
+                               		<input type="text" placeholder="Your search term e.g ecobank" class="form-control" id="TwitterSegmentTerm"/>
+                               		<input type="text" value="{{segment}}" id="SegmentNameTweets" style="display: none;"/>
+                               	</div>
+
+                               	<div class="form-group">
+                               		<button class="btn btn-success" id="TwitterSegmentSubmit"><i class="glyphicon glyphicon-send"></i> Submit query</button>
+                               	</div>
+
+                               	<div>
+                               		<table class="display responsive no-wrap" id="twitter_table" style="width: 100%;"></table>
+                               	</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4" id="actionsTweets" style="display: none;">
+                    	<div class="card">
+                    		<div class="header">
+                    			<h4 class="title">Actions</h4>
+                    			<p class="SegmentDetails">Add tweet sentiments to your segment. This enables us to further understand the segment</p>
+                    		</div>
+
+                    		<div class="content">
+                    			<form>{% csrf_token %}
+                    				<button class="btn btn-success" id="AddSentiment"><i class="glyphicon glyphicon-heart-empty"></i> Add sentiments to segment</button>
+                    			</form>
+                    		</div>
+                    	</div>
+                    </div>
+
+                            </div>
+                        </div>
+        </div>
+
+{% endblock %}

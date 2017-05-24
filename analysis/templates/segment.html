@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Segments</h4>
+                                <p class="segmentDescrition">A segment is a group of customers based on common <span class="text-success">behavior.</span> Each segment enables us to better understand our customers</p>
+                            </div>
+                            <div class="content">
+                                <div class="analysis_collection">
+                                    <ul id="og-grid" class="og-grid">
+                                        <li>
+                                            <a href="{% url 'create_segment' %}">
+                                            <div class="analysis_collection_file">
+                                                <p class="text-muted">Create new segment <span class="glyphicon glyphicon-plus"></span></p>
+                                            </div>
+                                            </a>
+                                        </li>
+
+                                        {% for segment in segment %}
+                                        
+                                        <li>
+                                            <a href="{% url 'analyse-data' segment.es_index %}">
+                                            <div class="analysis_collection_file1">
+                                                <h4>{{segment.name}}</h4>
+                                            </div>
+
+                                            </a>
+                                        </li>
+
+                                        {% endfor %}
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+    
+                                </div>
+                            </div>
+                        </div>
+{% endblock %}

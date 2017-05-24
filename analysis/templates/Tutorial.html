@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">How <span class="text-success">Iris</span> works</h4>
+                                <p class="segmentDescrition">With growing customer raw data, iris is at the forefront of enabling businesses to get meaning and predict based on the data. Iris uses four sections to analyse and present customer data. This includes: <!--including the ability to build customer segments based on actual customer behavior. Iris then automatically finds patterns in the segments. Enablign-->
+                                </p>
+
+                                <ul>
+                                	<li><strong>Customer profiles: </strong></li>
+                                	<li><strong>Segments: </strong></li>
+                                	<li><strong>Predict: </strong></li>
+                                	<li><strong>Discover opportunities: </strong></li>
+                                </ul>
+                            </div>
+                            <div class="content">
+                            	<p class="segmentDescrition" style="font-weight: 700; font-size: 22px;">Customer Profiles</p>
+                            	<p class="segmentDescrition">Attach your csv/excel format files containing customer profile information in this section as shown below. 
+                            	<img src="{% static 'assets/img/customer.png' %}" width="75%" height="75%"/>	
+
+                            	<p class="segmentDescrition">These includes files with columns the following customer data: First name, Middle name, Last name, Date of Birth, Email, ID number, Gender, Nationality and Marital status. These data however changes with the type of business and the customer profile data they have. This enables Iris to create a base structure of our customers</p>
+                            	<p class="segmentDescrition">From the added files containing customer data, Iris ingests the data and creates further insights and visualization of who our customers are automatically. Every time we add new files the visualizations change to reflect the new data. An example of such insights is shown below:</p>
+                            	<img src="{% static 'assets/img/customerProfile.png' %}" width="75%" height="75%"/>
+
+                            	<br/><br/> <br/> <br/>
+                            	<p class="segmentDescrition" style="font-weight: 700; font-size: 22px;">Segments:</p>
+                            	<p class="segmentDescrition">A customer segment is a group of customers who behave in the same way. Iris is build to allow you to build your own segments flexibly where a segment can contain one of more user behaviors' that can be used to group customers. This builds further on demographic segmentation of customers to not only segment customers on age, gender and nationality but also by their behaviors. To create a new segment, click on <span class="text-success">create new segment</span> as shown below:</p>
+                            	<img src="{% static 'assets/img/createSegment.png' %}" width="75%" height="75%"/>
+
+                            	<br/><br/>
+
+                            	<p class="segmentDescrition">You will then get a page to add the name of your segment. Descriptive names are encouraged inorder to help understand what a segment is for. And incase you share your segment with a team member, they will easily understand the segment.An example is shown below of a segment we are creating </p>
+                            	<img src="{% static 'assets/img/customersegmentName.png' %}"  width="75%" height="75%"/>
+
+                            	<p class="segmentDescrition">After adding the name of the segment you should then upload one or more <span class="text-success">csv file(s)</span> which contain data about customer behaviors related to the segment we want to create as shown below. 
+                            	<img src="{% static 'assets/img/attachsegment.png' %}"  width="75%" height="75%"/>
+
+                            	<br/> <br/>
+                            	<p class="segmentDescrition">If multiple files are added we have to give the common column among the files to enable merging of the files. This feature enables businesses to combine customer behavior from different sources for analyis. This is shown below: </p>
+
+                            	<img src="{% static 'assets/img/attachsegment1.png' %}" width="75%" height="75%"/>
+                            	<br/><br/>
+
+                            	<p class="segmentDescrition">Iris then displays a single row of the uploaded file(s) to you how the uploaded file(s) appear as shown below. If satisfied, click on <span class="text-success">Looks good</span> button to submit the files for ingestion and indexing.</p>
+
+                            	<img src="{% static 'assets/img/lks.png' %}" width="75%" height="75%"/>
+
+                            	<br/></br>
+
+                            	<p class="segmentDescrition">Now our segment has been partially created. We can view the actions available for the segment on the right side column and also a small description of the files added to the segment on the middle section as shown below. </p>
+                            	<img src="{% static 'assets/img/segmentD.png' %}" width="75%" height="75%"/>
+
+                            	<p class="segmentDescrition">To analyse customer behavior click on the <span class="text-success">Query this segment </span>button</p>
+
+                            	<p class="segmentDescrition">You can then use the interface presented to build the query of behaviors we are analysing as shown below.</p>
+
+                            	<img src="{% static 'assets/img/query.png' %}" width="75%" height="75%"/>
+                            	<br/></br>
+
+                            	<p class="segmentDescrition">For this demo we are looking for customers who purchase items online. From the dropdown select the column "salesChannel". This columns are generated directly from files uploaded for this particular segment. Then select the condition. In our case "Is equal to". The add our value. i.e "online". This is also value from our column data to identify customers purchasing items online</p>
+
+                            	<p class="segmentDescrition">Click <span class="text-success">Add query</span> button to generate our query on the top right under "My Query". And then click <span class="text-success"><span>Run this query</span> This is as shown below</p>
+                        		
+                        		<img src="{% static 'assets/img/query1.png' %}" width="75%" height="75%"/>
+                            	<br/></br>
+
+                            	<p class="segmentDescrition">Once the query is ran, you will get a list of all customer purchases made online. You can move back and refine the query further or click <span class="text-success">Create customer segment </span>button to create our customer segment.</p>
+                        		
+                        		<img src="{% static 'assets/img/results.png' %}" width="75%" height="75%"/>
+                            	<br/></br>
+
+                            	<p class="segmentDescrition">Iris then displays a page for you to specify the mapping between your customer profile data and the behavior data you have just analysed. This is the column in our behavior data that identifies the particular customer.</p>
+
+                            	<img src="{% static 'assets/img/map.png' %}" width="75%" height="75%"/>
+                            	<br/></br>
+
+                            	<p class="segmentDescrition">Once you choose the mapping Iris creates a list of customers from our customer profiles who exhibit the behavior as shown below</p>
+
+                            	<img src="{% static 'assets/img/data.png' %}" width="75%" height="75%"/>
+                            	<br/></br>
+
+                            	<p class="segmentDescrition">You have created a list of customers who purchase their items online. Now its time to see the insights and patterns for this behavior. Click on <span class="text-success">Visual summary</span> button. You will see the patterns of the users who purchased items online as shown below.</p>
+
+                            	<img src="{% static 'assets/img/patterns.png' %}" width="75%" height="75%"/>
+                            	<br/></br>
+
+                            	<p class="segmentDescrition">Also you may need to view your own visualizations from our segment e.g Let's view the products bought by the customers who shop online. This would be done by simply selecting the "units sold" and the "product sold" under create own visualization as shown below</p>
+
+                            	<img src="{% static 'assets/img/own.png' %}" width="75%" height="75%"/>
+                            	<br/></br>
+
+                            	<p class="segmentDescrition" style="font-weight: 700; font-size: 22px;">Predict</p>
+                            	<p class="segmentDescrition"> In the predict section, you get to view key drivers of customer behavior. Key drivers help us understand why customers behave the way they do thus enabling prediction. First click on the particular segment you want to predict as shown below. </p>
+
+                            	<img src="{% static 'assets/img/psegment.png' %}" width="75%" height="75%"/>
+                            	<br/></br>
+
+                            	<p class="segmentDescrition">You will then be able to view the key drivers based on customer profile data that make customers behave in a certain way. You can also view key drivers of user behavior by creating your own prediction from the dropdown of predictable data. Iris uses numeric data and a correlation algorithm to identify key drivers of customer behavior and if unavailable key drivers are given as the patterns found in customer profiles. This is shown below. </p>
+
+                            	<img src="{% static 'assets/img/drivers.png' %}" width="75%" height="75%"/>
+                            	<br/><br/> <br/> <br/>
+
+                            	<p class="segmentDescrition" style="font-weight: 700; font-size: 22px;">Discover opportunities</p>
+                            	<p class="segmentDescrition">Customers generate a lot of data from social media. To create value from this, Iris enables you to search twitter data, discover insights and patterns that enable you to better server your customers better. This data can also help you find new opportunities from weaknesses of your competitor. To begin your search enter a search term on the search bar as shown below. </p>
+
+                            	<img src="{% static 'assets/img/d1.png' %}" width="75%" height="75%"/>
+                            	<br/><br/> 
+
+                            	<p class="segmentDescrition">The twitter data from your search is divided into 3 sections: </p>
+                            	<ul>
+                            		<li>Positive tweets</li>
+                            <img src="{% static 'assets/img/d2.png' %}" width="75%" height="75%"/>
+                            	<br/><br/> 
+                            		<li>Negative tweets</li>
+
+                            	<img src="{% static 'assets/img/d3.png' %}" width="75%" height="75%"/>
+                            	<br/><br/> 
+                            		<li>Neutral tweets</li>
+
+                            	<img src="{% static 'assets/img/d4.png' %}" width="75%" height="75%"/>
+                            	<br/><br/> 
+                            	</ul>
+
+                            	<p class="segmentDescrition">These 3 sections help us learn more about a product or a service and find out new opportunities from product/service complaints. The data has 8 columns i.e Name, gender, location, posted time, followers, friends, body and preferred username. You can sort or search the data based on any of the columns. With this feature, you can find the location with the most complaints or compliments, giving us very important insights and patterns. You can also view the tweets by people with large number of followers and friends. These people can be viewed as a products brand ambassadors. These are just some of the possibilities that can be realised by using Iris</p>
+
+                            	<br/></br>
+
+                            	<p class="segmentDescrition" style="font-weight: 700; font-size: 22px;">Summary</p>
+                            	<p class="segmentDescrition">How to analyse and predict on any customer data using <span class="text-success">IRIS</span></p>
+                            	<ul>
+                            		<li>Add customer profile data. This however is not a repeated task as compared to the rest of the steps. It only changes when our list of customers changes.</li>
+                            		<li>Identify the behavior we want to analyse</li>
+                            		<li>Create a customer segment and describe the behavior</li>
+                            		<li>Add data to the segment that relates to the behavior you want to analyse</li>
+                            		<li>Analyse</li>
+                            		<li>View automatic patterns and insights generated by IRIS</li>
+                            		<li>Predict on this segment</li>
+                            		<li>You can also add the large resource of data from twitter to understand how people feel about a product or service from analysis done by iris, just add your term and you get the data</li>
+                            	</ul>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+    
+                                </div>
+                            </div>
+                        </div>
+
+{% endblock %}
