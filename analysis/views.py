@@ -106,4 +106,37 @@ def segmentCreation(request):
 
 		return HttpResponse(json.dumps({'fail':"Segment already exists"}), content_type="application/json")
 
+def IndexData(request):
+	es = ElasticSearch(settings.ELASTIC_SEARCH)
+	for file in fileHolder:
+		index = file['segment_name'].lower()
+		rawfiles = file['rawfiles']
+		data_for_es = file['dataFrames']
+		try :
+			es.delete_index(index.replace(" ", ""))
+		except :
+			pass
+	es.create_index(index.replace(" ", ""))
+
+	## Loop dataframe and to elasticsearch index
+	docs= json.loads(data_for_es.to_json(orient='records'))
+	es.bulk((es.index_op(doc) for doc in docs),index=index.replace(" ", ""), doc_type=index)
+
+	##Create segment template
+	file_names = []
+	for file in rawfiles:
+		file_names.append(file.name)
+
+	segment = Segments(name=index, files_added=",".join(file_names), es_index=index.replace(" ", ""))
+	segment.save()
+
+	segment = Segments.objects.get(name=index)
+
+	return render(request, 'analyse.html', {'segment':segment})
+
+#All segments
+def segment(request):
+	segment = Segments.objects.all()
+	return render(request, 'segment.html', {'segment':segment})
+
 
