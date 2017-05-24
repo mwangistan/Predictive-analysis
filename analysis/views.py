@@ -74,3 +74,36 @@ def customerUpload(request):
 		return HttpResponse(json.dumps({'success':"Added successfully"}), content_type="application/json")
 
 
+def segmentCreation(request):
+	###### Remember to check if a segment already exists
+	if request.method == 'POST':
+		del fileHolder[:]
+		try:
+			Segments.objects.get(es_index=request.POST['segment_name'].lower())
+		except:
+			if len(request.FILES.getlist('key')) > 1:
+				df = []
+				for file in request.FILES.getlist('key'):
+					file = pandas.read_csv(file)
+					df.append(file)
+
+				final = reduce(lambda left,right: pandas.merge(left,right,on=request.POST['columns_to_merge'], how='outer'), df)
+				file_rs = final[:1].to_json(orient='index')
+
+				fileHolder.append({'rawfiles':request.FILES.getlist('key'), 'segment_name':request.POST['segment_name'].lower(),
+				'dataFrames':final})
+
+				return HttpResponse(json.dumps({'success':"Added successfully", 'rs':file_rs}), content_type="application/json")		
+			else:
+				for file in request.FILES.getlist('key'):
+					dataFrames = pandas.read_csv(file)
+					file_rs = dataFrames[:1].to_json(orient='index')
+
+				fileHolder.append({'rawfiles':request.FILES.getlist('key'), 'segment_name':request.POST['segment_name'],
+				'dataFrames':dataFrames})
+
+				return HttpResponse(json.dumps({'success':"Added successfully", 'rs':file_rs}), content_type="application/json")
+
+		return HttpResponse(json.dumps({'fail':"Segment already exists"}), content_type="application/json")
+
+
