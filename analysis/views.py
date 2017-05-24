@@ -63,3 +63,14 @@ def customerSummary(request):
 
 		return HttpResponse(json.dumps({'gender':gender, 'nationality':nationality, 'marital_status':marital_status,
 			'age':age}), content_type="application/json")
+
+
+def customerUpload(request):
+	if request.method == 'POST':
+		for file in request.FILES.getlist('key'):
+			    file.save_to_database(model=CustomerProfiles, mapdict={'First name':'first_name', 'Middle name': 'middle_name',
+				    'Last name':'last_name', 'Date Of Birth':'date_of_birth', 'Email':'email', 'ID number':'id_number',
+				    'Gender':'gender', 'Nationality':'nationality', 'Marital status':'marital_status'})
+		return HttpResponse(json.dumps({'success':"Added successfully"}), content_type="application/json")
+
+
