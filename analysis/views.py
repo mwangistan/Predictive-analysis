@@ -154,4 +154,116 @@ def analyse(request, name):
 
 	return render(request, 'analyse_segment.html', {'segment':segment, 'columns':keys})
 
+def analyse_summary(request, name):
+	segment = Segments.objects.get(es_index=name)
+	return render(request, 'analyse.html', {'segment':segment})
+
+def segment_summary(request, name):
+		segment = Segments.objects.get(es_index=name)
+		return HttpResponse(serializers.serialize("json", segment.customers.all()))
+
+def query(request):
+	es = ElasticSearch(settings.ELASTIC_SEARCH)
+	query = {
+	    "query": {
+            "bool" : {
+
+        }
+      }
+    }
+
+    #Building the query
+	dict_value = dict(request.POST)
+	for key in dict_value['query']:
+		key = key
+
+	value = ast.literal_eval(key)
+	AndQueries = []
+	OrQueries = []
+
+	for index, key in enumerate(value['exact_query']):
+		if key['condition'] == 'is equal to':
+			query_values = { "term" : { key['column'] : key['value'] } }
+		if key['condition'] == 'is less than':
+			query_values = {"range" : {key['column'] : { "lt" : key['value']}}}
+		if key['condition'] == 'is greater than':
+			query_values = {"range" : {key['column'] : { "gt" : key['value']}}}
+		if key['condition'] == 'is less than or equal to':
+			query_values = {"range" : {key['column'] : { "lte" : key['value']}}}
+		if key['condition'] == 'is greater than or equal to':
+			query_values = {"range" : {key['column'] : { "gte" : key['value']}}}
+		if key['condition'] == 'is not equal to':
+			query_values = {"must_not" : { "term": { key['column'] : key['value'] } }}
+
+		if key['operation'] == 'and':
+			AndQueries.append(query_values)
+		if key['operation'] == 'or':
+			OrQueries.append(query_values)
+		if key['operation'] == '':
+			if index < (len(value['exact_query']) - 1):
+				next_value = value['exact_query'][index + 1]
+				if next_value['operation'] == 'and':
+					AndQueries.append(query_values)
+				if next_value['operation'] == 'or':
+					OrQueries.append(query_values)
+			else:
+				query['query']['bool']['must'] = query_values
+
+	if len(AndQueries) != 0:
+		query['query']['bool']['must'] = AndQueries
+	if len(OrQueries) != 0:
+		query['query']['bool']['should'] = OrQueries
+
+	results = es.search(query, index=dict_value['index'][0], size=10000)
+	return HttpResponse(json.dumps({'success':"Added successfully", 'results':results}), content_type="application/json")
+
+def SegmentCustomers(request):
+	if request.method == 'POST':
+		customerSgmt = []
+		results = json.loads(request.POST['results'])['hits']['hits']
+		customers = CustomerProfiles.objects.all()
+		segment = Segments.objects.get(es_index=request.POST['segment'])
+		segment.segmentSearch = request.POST['message']
+		segment.searchResults = json.dumps(results)
+		segment.save()
+
+		## Remove any customers contained in the segment
+		if len(segment.customers.all()) != 0:
+			segment.customers.clear()
+		if len(customers) != 0:
+			for customer in customers:
+				for rs in results:
+					if customer.id_number == rs['_source'][request.POST['behavior']]:
+						segment.customers.add(customer)
+						segment.mapping_profiles = request.POST['behavior']
+						segment.save()
+					elif customer.email == rs['_source'][request.POST['behavior']]:
+						segment.customers.add(customer)
+						segment.mapping_profiles = request.POST['behavior']
+						segment.save()
+					elif customer.first_name == rs['_source'][request.POST['behavior']]:
+						segment.customers.add(customer)
+						segment.mapping_profiles = request.POST['behavior']
+						segment.save()
+					elif customer.middle_name == rs['_source'][request.POST['behavior']]:
+						segment.customers.add(customer)
+						segment.mapping_profiles = request.POST['behavior']
+						segment.save()
+					elif customer.last_name == rs['_source'][request.POST['behavior']]:
+						segment.customers.add(customer)
+						segment.mapping_profiles = request.POST['behavior']
+						segment.save()
+					else:
+						pass
+
+			if len(segment.customers.all()) == 0:
+				return HttpResponse(json.dumps({'failMatch':"Matching fail"}), content_type="application/json")
+			else:
+				return HttpResponse(json.dumps({'success':"Added successfully"}), content_type="application/json")
+
+		else:
+			return HttpResponse(json.dumps({'fail':"Customers profile don't exist"}), content_type="application/json")
+		
+	return render(request, 'segmentCustomers.html', {'columns':keys})
+
 
