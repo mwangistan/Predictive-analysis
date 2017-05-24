@@ -140,3 +140,18 @@ def segment(request):
 	return render(request, 'segment.html', {'segment':segment})
 
 
+def analyse(request, name):
+	del keys[:]
+	es = ElasticSearch(settings.ELASTIC_SEARCH)
+	segment = Segments.objects.get(es_index=name)
+	mapping = es.get_mapping(index=segment.es_index, doc_type=segment.name)
+	new_mapping = {}
+	for i in mapping:
+		new_mapping['map'] = mapping[i]['mappings'][segment.name]['properties']
+
+	for key in new_mapping['map']:
+		keys.append(key)
+
+	return render(request, 'analyse_segment.html', {'segment':segment, 'columns':keys})
+
+
